@@ -35,31 +35,49 @@ function ensureEncoded(url: string): string {
     return url;
 }
 
-export default function WalletButtons() {
-    const searchParams = useSearchParams();
-    const url = ensureEncoded(searchParams.get("url") || '');
-    const intersitial = ensureEncoded('https://dial.to/?action=');
-    const ref = ensureEncoded('https://dial.to');
+interface WalletButtonsProps {
+    url?: string;
+}
 
+export default function WalletButtons({ url: propUrl }: WalletButtonsProps) {
+    // Use the URL from props if provided, otherwise get it from search params
+    const searchParams = useSearchParams();
+    const rawUrl = propUrl || searchParams.get("url") || '';
+
+    // For mobile wallet apps, we need to construct URLs very carefully
+
+    // The ref parameter should be encoded
+    const ref = encodeURIComponent('https://dial.to');
+
+    // For Phantom and Solflare, we create direct deep links to the target URL
+    // We don't use the interstitial approach - just direct to the target
+    const targetUrl = encodeURIComponent(rawUrl);
+
+    // Construct the final URLs for wallet deep links
+    const phantomUrl = `https://phantom.app/ul/browse/${targetUrl}?ref=${ref}`;
+    const solflareUrl = `https://solflare.com/ul/browse/${targetUrl}?ref=${ref}`;
+
+    console.log("Raw URL:", rawUrl);
+    console.log("Target URL (encoded):", targetUrl);
+    console.log("Phantom URL:", phantomUrl);
+    console.log("Solflare URL:", solflareUrl);
 
     // Function to handle opening with different wallets
     const openWithWallet = (walletType: string) => {
-        if (!url) {
+        if (!rawUrl) {
             console.error("No URL provided");
             return;
         }
 
-        // The URL is already encoded from the query parameter, so we use it directly
+        // Open the appropriate wallet URL
         if (walletType === "phantom") {
-            // Phantom specific handling
-            window.location.href = `https://phantom.app/ul/browse/${intersitial}${url}?ref=${ref}`;
+            window.location.href = phantomUrl;
         } else if (walletType === "solflare") {
-            // Solflare specific handling
-            window.location.href = `https://solflare.com/ul/browse/${intersitial}${url}?ref=${ref}`;
+            window.location.href = solflareUrl;
         }
     };
 
-    if (!url) {
+    if (!rawUrl) {
         return (
             <p className="text-red-500 text-center px-4 py-3 bg-red-50 rounded-lg border border-red-100">
                 No URL parameter provided. Add ?url=yourEncodedUrl to the address.
