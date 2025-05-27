@@ -35,6 +35,14 @@ function ensureEncoded(url: string): string {
     return url;
 }
 
+// Function to clean URL - remove any "A" prefix if present
+function cleanUrl(url: string): string {
+    if (url.startsWith('A')) {
+        return url.substring(1);
+    }
+    return url;
+}
+
 interface WalletButtonsProps {
     url?: string;
 }
@@ -44,6 +52,9 @@ export default function WalletButtons({ url: propUrl }: WalletButtonsProps) {
     const searchParams = useSearchParams();
     const rawUrl = propUrl || searchParams.get("url") || '';
 
+    // Clean the URL by removing any "A" prefix
+    const cleanedUrl = cleanUrl(rawUrl);
+
     // For mobile wallet apps, we need to construct URLs very carefully
 
     // The ref parameter should be encoded
@@ -51,20 +62,21 @@ export default function WalletButtons({ url: propUrl }: WalletButtonsProps) {
 
     // For Phantom and Solflare, we create direct deep links to the target URL
     // We don't use the interstitial approach - just direct to the target
-    const targetUrl = encodeURIComponent(rawUrl);
+    const targetUrl = encodeURIComponent(cleanedUrl);
 
     // Construct the final URLs for wallet deep links
     const phantomUrl = `https://phantom.app/ul/browse/${targetUrl}?ref=${ref}`;
     const solflareUrl = `https://solflare.com/ul/browse/${targetUrl}?ref=${ref}`;
 
     console.log("Raw URL:", rawUrl);
+    console.log("Cleaned URL:", cleanedUrl);
     console.log("Target URL (encoded):", targetUrl);
     console.log("Phantom URL:", phantomUrl);
     console.log("Solflare URL:", solflareUrl);
 
     // Function to handle opening with different wallets
     const openWithWallet = (walletType: string) => {
-        if (!rawUrl) {
+        if (!cleanedUrl) {
             console.error("No URL provided");
             return;
         }
@@ -77,7 +89,7 @@ export default function WalletButtons({ url: propUrl }: WalletButtonsProps) {
         }
     };
 
-    if (!rawUrl) {
+    if (!cleanedUrl) {
         return (
             <p className="text-red-500 text-center px-4 py-3 bg-red-50 rounded-lg border border-red-100">
                 No URL parameter provided. Add ?url=yourEncodedUrl to the address.
