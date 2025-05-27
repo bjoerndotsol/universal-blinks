@@ -71,7 +71,7 @@ export default function WalletButtons({ url: propUrl }: WalletButtonsProps) {
 
     // Construct the final URLs for wallet deep links
     const phantomUrl = `https://phantom.app/ul/browse/${encodedFullUrl}?ref=${ref}`;
-    const solflareUrl = `https://solflare.com/ul/browse/${encodedFullUrl}?ref=${ref}`;
+    const solflareUrl = `https://solflare.com/ul/v1/browse/${encodedFullUrl}?ref=${ref}`;
 
     console.log("Raw URL:", rawUrl);
     console.log("Cleaned URL:", cleanedUrl);
