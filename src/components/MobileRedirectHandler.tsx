@@ -23,6 +23,7 @@ function cleanUrl(url: string): string {
 
 export default function MobileRedirectHandler() {
     const searchParams = useSearchParams();
+    // Get the raw URL parameter
     const rawUrl = searchParams.get("url") || '';
 
     // Clean the URL by removing any "A" prefix

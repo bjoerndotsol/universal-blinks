@@ -60,17 +60,23 @@ export default function WalletButtons({ url: propUrl }: WalletButtonsProps) {
     // The ref parameter should be encoded
     const ref = encodeURIComponent('https://dial.to');
 
-    // For Phantom and Solflare, we create direct deep links to the target URL
-    // We don't use the interstitial approach - just direct to the target
-    const targetUrl = encodeURIComponent(cleanedUrl);
+    // Create the dial.to interstitial prefix
+    const interstitialPrefix = 'https://dial.to/?action=';
+
+    // Construct the full URL with interstitial for mobile wallets
+    const fullUrl = interstitialPrefix + cleanedUrl;
+
+    // Encode the full URL for use in wallet deep links
+    const encodedFullUrl = encodeURIComponent(fullUrl);
 
     // Construct the final URLs for wallet deep links
-    const phantomUrl = `https://phantom.app/ul/browse/${targetUrl}?ref=${ref}`;
-    const solflareUrl = `https://solflare.com/ul/browse/${targetUrl}?ref=${ref}`;
+    const phantomUrl = `https://phantom.app/ul/browse/${encodedFullUrl}?ref=${ref}`;
+    const solflareUrl = `https://solflare.com/ul/browse/${encodedFullUrl}?ref=${ref}`;
 
     console.log("Raw URL:", rawUrl);
     console.log("Cleaned URL:", cleanedUrl);
-    console.log("Target URL (encoded):", targetUrl);
+    console.log("Full URL with interstitial:", fullUrl);
+    console.log("Encoded full URL:", encodedFullUrl);
     console.log("Phantom URL:", phantomUrl);
     console.log("Solflare URL:", solflareUrl);
 
