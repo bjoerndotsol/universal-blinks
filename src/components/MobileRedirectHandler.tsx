@@ -33,7 +33,7 @@ export default function MobileRedirectHandler() {
     const [isLoading, setIsLoading] = useState(true);
 
     // Construct the direct URL with the cleaned URL
-    const dialToUrl = `https://dial.to/?action=${cleanedUrl}`;
+    const dialToUrl = `https://dial.to/?action=solana-action:${cleanedUrl}`;
 
     // Initialize mobile detection and handle redirection
     useEffect(() => {

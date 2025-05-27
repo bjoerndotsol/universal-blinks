@@ -61,7 +61,7 @@ export default function WalletButtons({ url: propUrl }: WalletButtonsProps) {
     const ref = encodeURIComponent('https://dial.to');
 
     // Create the dial.to interstitial prefix
-    const interstitialPrefix = 'https://dial.to/?action=';
+    const interstitialPrefix = 'https://dial.to/?action=solana-action:';
 
     // Construct the full URL with interstitial for mobile wallets
     const fullUrl = interstitialPrefix + cleanedUrl;
