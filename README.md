@@ -7,7 +7,7 @@ Universal Blinks is a wrapper solution that makes Solana Blinks work seamlessly 
 When sharing Solana Blinks on social media, you encounter several issues:
 
 1. **No Open Graph (OG) data**: Blinks don't display proper previews on social platforms
-2. **Mobile compatibility**: Blinks don't work properly on mobile devices unless opened in an in-app browser
+2. **Mobile compatibility**: Blinks don't work properly on mobile devices unless opened in an in-app browser from your wallet
 3. **Poor user experience**: Users often can't interact with Blinks as intended
 
 ## The Solution
